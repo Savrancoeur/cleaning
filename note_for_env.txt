@@ -1,0 +1,76 @@
+Important .env Configuration Notes
+
+1.Pusher Configuration (For real-time notifications)            *****
+
+Make sure you have a Pusher account and add your credentials:
+
+PUSHER_APP_ID
+PUSHER_APP_KEY
+PUSHER_APP_SECRET
+PUSHER_APP_CLUSTER
+
+If you don't need real-time notifications, set BROADCAST_CONNECTION=log instead.
+
+----------------------------------------------------------------
+
+2.Session Driver                                               *****
+
+We are using SESSION_DRIVER=database, so you need to run:
+
+-php artisan session:table
+-php artisan migrate
+
+This step is necessary to store sessions in the database.
+
+----------------------------------------------------------------
+
+3.Cache Configuration                                           *****
+
+Cache is using CACHE_STORE=database. You need to run:
+
+
+-php artisan cache:table
+-php artisan migrate
+
+This will create the required cache table in your database.
+
+---------------------------------------------------------------
+
+4.Queue Connection                                             *****
+
+QUEUE_CONNECTION=sync means that queued jobs will be processed immediately (synchronously).
+
+If you want to use a different queue driver (e.g., database, redis, etc.), 
+make sure to update this setting and run:
+
+-php artisan queue:table
+-php artisan migrate
+
+Using a queue driver like database or redis is recommended for handling background tasks efficiently in production environments.
+
+---------------------------------------------------------------
+
+5.Mail Configuration
+
+The default MAIL_MAILER=log means emails are logged instead of being sent.
+
+For actual email sending, 
+update the MAIL_HOST, MAIL_PORT, MAIL_USERNAME, and MAIL_PASSWORD 
+to match your email service provider's settings.
+
+---------------------------------------------------------------
+
+6.Application Timezone
+
+The APP_TIMEZONE=UTC setting determines the default timezone of your application.
+
+Adjust this to your desired timezone if necessary.
+
+---------------------------------------------------------------
+
+7.Redis Configuration
+
+If you plan to use Redis, ensure you have the phpredis PHP extension installed, as REDIS_CLIENT=phpredis is the default.
+
+Alternatively, you can use REDIS_CLIENT=predis if phpredis is not available.
+
