@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\NotiEvent;
-use App\Models\Order;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $orders  = Order::paginate(10);
-        return view('admin-panel.order.index', compact('orders'));
+        $categories  = Category::paginate(10);
+        return view('admin-panel.category.index', compact('categories'));
     }
 
     /**
@@ -22,7 +21,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin-panel.category.create');
     }
 
     /**
@@ -30,18 +29,11 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $orders = Order::create([
+        Category::create([
             'name' => $request->name,
-            'address' => $request->address,
-            'remark' => $request->remark,
-            'customer_id' => 1
         ]);
 
-        $message = $orders;
-
-        event(new NotiEvent($message));
-
-        return redirect()->route('home')->with('success', 'Order Created Successfully');
+        return redirect()->route('categories.index')->with('success', 'Category created successfully');
     }
 
     /**
@@ -57,7 +49,8 @@ class OrderController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::find($id);
+        return view('admin-panel.category.edit', compact('category'));
     }
 
     /**
@@ -65,16 +58,18 @@ class OrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        Category::find($id)->update([
+            'name' => $request->name,
+        ]);
+        return redirect()->route('categories.index')->with('successMsg', 'You have successfully updated a category!');
     }
-
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        Category::find($id)->delete();
+        return redirect()->route('categories.index')->with('successMsg', 'You have successfully deleted a category!');
     }
 }

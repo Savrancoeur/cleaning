@@ -29,10 +29,6 @@ class WorkerController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-
-        ]);
 
         Worker::create([
             'name' => $request->name,
@@ -59,7 +55,8 @@ class WorkerController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $worker = Worker::find($id);
+        return view('admin-panel.worker.edit', compact('worker'));
     }
 
     /**
@@ -67,7 +64,15 @@ class WorkerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        Worker::find($id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'nrc' => $request->nrc,
+            'phone' => $request->phone,
+            'status' => $request->status,
+            'start_date' => $request->start_date,
+        ]);
+        return redirect()->route('workers.index')->with('successMsg', 'You have successfully updated a worker!');
     }
 
     /**
@@ -75,6 +80,7 @@ class WorkerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Worker::find($id)->delete();
+        return redirect()->route('workers.index')->with('successMsg', 'You have successfully deleted a worker!');
     }
 }

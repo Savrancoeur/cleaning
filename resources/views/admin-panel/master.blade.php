@@ -6,10 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
 
-    <!-- Bootstrap CSS Link -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
     <!-- Fontawesome CDN Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
@@ -18,121 +14,67 @@
     {{-- Sweet Alert CDN Link --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    @vite('resources/js/app.js')
+    <!-- Tailwind CSS -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
         body {
-            padding: 3px;
-        }
-
-        .navbar {
-            background-color: navy;
-        }
-
-        .sidenav {
-            width: 200px;
-            height: 100%;
-            background-color: green;
-
-            position: fixed;
-            padding: 15px;
-
-        }
-
-        .sidenav a {
-            display: block;
-            font-size: 18px;
-
-            text-decoration: none;
-            color: #f4f4f4;
-            padding: 6px;
-        }
-
-
-        .main {
-            margin-left: 205px;
-            font-size: 18px;
-            padding: 20px;
-        }
-
-        .mainCol {
-            padding: 0px;
-            margin: 0px;
-        }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 5;
-            width: 100%;
+            padding: 0;
         }
     </style>
 </head>
 
-<body>
-    <div class="container-fluid mainCol">
-        <div class="row ">
-            <div class="col-md-12 mainCol">
-                <!-- navigation section -->
-                <nav class="navbar navbar-expand-lg  navbar-dark position-sticky">
-                    <div class="container-fluid">
-                        <a class="navbar-brand" href="{{ url('/admin/dashboard') }}">MyanAnt Cleaning</a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
+<body class="bg-gray-200">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-green-700 p-6 text-white shadow-lg">
+            <img src="{{ asset('storage/images/logo.png') }}" alt="Logo" class="h-[120px] rounded-xl mb-">
+            <nav>
+                <a href="{{ url('admin/dashboard') }}"
+                    class="block py-2 px-4 rounded-lg hover:bg-green-800">Dashboard</a>
+                <a href="{{ url('admin/categories') }}"
+                    class="block py-2 px-4 rounded-lg hover:bg-green-800">Category</a>
+                <a href="{{ url('admin/workers') }}" class="block py-2 px-4 rounded-lg hover:bg-green-800">Workers</a>
+                <a href="{{ url('admin/orders') }}" class="block py-2 px-4 rounded-lg hover:bg-green-800">Orders</a>
+            </nav>
+        </aside>
 
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        {{-- {{ Auth::user()->name }} --}}
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        {{-- <form action="{{ route('logout') }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="dropdown-item"
-                                                onclick="return confirm('Are you sure you want to logout?')">Logout</button>
-                                        </form> --}}
-                                        <!-- <li><a class="dropdown-item" href="#">Logout</a></li> -->
-                                    </ul>
-                                </li>
-
-                            </ul>
-                        </div>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <!-- Navbar -->
+            <nav class="bg-gray-800 text-white p-4 shadow-md flex justify-between items-center">
+                <a href="{{ url('/admin/dashboard') }}" class="text-xl font-bold">MyanAnt Cleaning</a>
+                <div class="dropdown dropdown-end">
+                    <div tabindex="0" role="button" class="btn m-1 flex items-center">
+                        {{ Auth::user()->name ?? 'User' }}
+                        <svg class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
                     </div>
-                </nav>
-
-                <!-- side bar section -->
-                <div class="sidenav">
-                    <a href="{{ url('admin/dashboard') }}">Dashboard</a>
-                    <a href="{{ url('admin/categories') }}">Category</a>
-                    <a href="{{ url('admin/workers') }}">Workers</a>
-                    <a href="{{ url('admin/orders') }}">Orders</a>
+                    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow z-[1]">
+                        <form action="{{ route('auth.logout') }}" method="POST">
+                            @csrf
+                            <li>
+                                <button type="submit" class="btn btn-error w-full">Logout</button>
+                            </li>
+                        </form>
+                    </ul>
                 </div>
+            </nav>
 
-                <!-- main content section -->
-                <div class="main">
+
+            <!-- Main Content Section -->
+            <main class="flex-1 p-6 overflow-y-auto">
+                <div class="bg-white rounded-lg shadow-lg p-6">
                     @yield('content')
                 </div>
-            </div>
+            </main>
         </div>
     </div>
 
-    <!-- Bootstrap JS Link -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
-    </script>
-
     @yield('javascript')
-
 </body>
 
 </html>

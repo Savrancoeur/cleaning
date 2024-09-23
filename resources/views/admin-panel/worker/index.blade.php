@@ -51,7 +51,8 @@
                                             <form action="{{ url('admin/workers/' . $worker->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <a href="" class="btn btn-sm btn-secondary" title="edit">
+                                                <a href=" {{ route('workers.edit', $worker->id) }} "
+                                                    class="btn btn-sm btn-secondary" title="edit">
                                                     <i class="fa-regular fa-pen-to-square"></i>
                                                 </a>
 

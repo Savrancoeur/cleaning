@@ -12,17 +12,33 @@
 <body class="bg-gray-50">
 
     <!-- Navbar -->
-    <nav class="bg-gradient-to-r from-sky-600 to-green-500 shadow-md p-4 flex justify-between items-center">
+    <nav class="bg-gradient-to-r from-green-700 to-sky-400 shadow-md p-4 flex justify-between items-center">
         <div class="flex items-center space-x-4">
             <img src="{{ asset('storage/images/logo.png') }}" alt="Logo" class="h-10 rounded-xl">
             <!-- Replace with your actual logo path -->
-            <span class="text-xl font-bold text-gray-800">MyanAnt Cleaning</span>
+            <span class="text-xl font-bold text-white">MyanAnt Cleaning</span>
         </div>
         <div class="space-x-4">
             <button class="btn btn-primary" id="orderBtn">Order</button>
-            <a href="#" class="text-gray-600">Login</a>
+            @if (auth()->user())
+                <div class="dropdown dropdown-end ">
+                    <div tabindex="0" role="button" class="btn m-1">{{ auth()->user()->name }}</div>
+                    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                        <form action="{{ route('auth.logout') }}" method="post">
+                            @csrf
+                            <li><button class="btn btn-error w-full" type='submit'>Logout</button></li>
+                        </form>
+                    </ul>
+                </div>
+            @else
+                <a href="{{ url('/auth/register') }}"
+                    class="btn btn-success text-white hover:bg-green-600 transition ease-in-out duration-200">Register</a>
+                <a href="{{ url('/auth/login') }}"
+                    class="btn btn-secondary text-white hover:bg-gray-700 transition ease-in-out duration-200">Login</a>
+            @endif
         </div>
     </nav>
+
 
     <!-- Main Content -->
     <main class="  bg-slate-800 mx-auto p-6">
